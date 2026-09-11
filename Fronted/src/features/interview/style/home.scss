@@ -661,3 +661,111 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, s
     justify-content: center;
     color: $text-primary;
 }
+
+@media (max-width: 980px) {
+    .resume-home {
+        padding: 1rem 1rem 2.5rem;
+    }
+
+    .topbar {
+        padding: 0.8rem 1rem;
+        flex-wrap: wrap;
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        order: 3;
+        flex-wrap: wrap;
+    }
+
+    .feature-strip {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .resume-home {
+        padding: 0.75rem 0.75rem 2rem;
+    }
+
+    .topbar {
+        position: static;
+        gap: 0.8rem;
+    }
+
+    .brand-name {
+        font-size: 1rem;
+    }
+
+    .nav-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .nav-button {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .hero-copy {
+        padding-top: 0.5rem;
+    }
+
+    .hero-copy h1 {
+        font-size: clamp(2rem, 10vw, 3.2rem);
+    }
+
+    .interview-card__body {
+        flex-direction: column;
+    }
+
+    .panel-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .panel {
+        padding: 1rem;
+    }
+
+    .panel__textarea {
+        min-height: 160px;
+    }
+
+    .interview-card__footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .reports-list .report-item {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-links {
+        justify-content: space-between;
+        gap: 0.25rem;
+    }
+
+    .nav-link {
+        padding: 0.45rem 0.55rem;
+        font-size: 0.75rem;
+    }
+
+    .feature-content {
+        padding: 0.9rem;
+    }
+
+    .section-heading h2 {
+        font-size: 1.6rem;
+    }
+
+    .generate-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+

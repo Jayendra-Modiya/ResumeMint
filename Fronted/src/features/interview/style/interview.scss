@@ -440,6 +440,71 @@ $severity-low: #3fb950;
     }
 }
 
+@media (max-width: 980px) {
+    .interview-page {
+        padding: 1rem;
+    }
+
+    .interview-layout {
+        flex-direction: column;
+        min-height: unset;
+    }
+
+    .interview-nav {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .interview-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .interview-content {
+        max-height: none;
+        padding: 1rem;
+    }
+
+    .content-header {
+        flex-wrap: wrap;
+    }
+
+    .interview-sidebar {
+        width: 100%;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .interview-page {
+        padding: 0.75rem;
+    }
+
+    .interview-content {
+        padding: 0.75rem;
+    }
+
+    .q-card__header {
+        padding: 0.8rem;
+    }
+
+    .q-card__question {
+        font-size: 0.82rem;
+    }
+
+    .q-card__index {
+        margin-top: 0;
+    }
+
+    .interview-nav__item {
+        padding: 0.65rem 0.75rem;
+    }
+
+    .roadmap-day {
+        padding-left: 3rem;
+    }
+}
+
 // Skill Gaps
 .skill-gaps {
     display: flex;

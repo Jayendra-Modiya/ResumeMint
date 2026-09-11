@@ -162,3 +162,22 @@ a {
         color: $accent;
     }
 }
+
+@media (max-width: 480px) {
+    main {
+        padding: 1rem 0.75rem;
+    }
+
+    .form-container {
+        padding: 1.5rem 1rem;
+        gap: 1.25rem;
+    }
+
+    .form-container h1 {
+        font-size: 1.45rem;
+    }
+
+    .button.primary-button {
+        padding: 0.8rem 1rem;
+    }
+}
