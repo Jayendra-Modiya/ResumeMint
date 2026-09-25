@@ -9,13 +9,20 @@ const Register = () => {
     const [ username, setUsername ] = useState("")
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
+    const [ error, setError ] = useState("")
 
     const {loading,handleRegister} = useAuth()
     
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await handleRegister({username,email,password})
-        navigate("/planner")
+        setError("")
+        const result = await handleRegister({username,email,password})
+
+        if (result.success) {
+            navigate("/planner")
+        } else {
+            setError(`* ${result.message}`)
+        }
     }
 
     if(loading){
@@ -41,20 +48,22 @@ const Register = () => {
                         <label htmlFor="username">Username</label>
                         <input
                             onChange={(e) => { setUsername(e.target.value) }}
-                            type="text" id="username" name='username' placeholder='Enter username' />
+                            required type="text" id="username" name='username' placeholder='Enter username' />
                     </div>
                     <div className="input-group">
                         <label htmlFor="email">Email</label>
                         <input
                             onChange={(e) => { setEmail(e.target.value) }}
-                            type="email" id="email" name='email' placeholder='Enter email address' />
+                            required type="email" id="email" name='email' placeholder='Enter email address' />
                     </div>
                     <div className="input-group">
                         <label htmlFor="password">Password</label>
                         <input
                             onChange={(e) => { setPassword(e.target.value) }}
-                            type="password" id="password" name='password' placeholder='Enter password' />
+                            required type="password" id="password" name='password' placeholder='Enter password' />
                     </div>
+
+                    {error && <p className='form-error' role='alert'>{error}</p>}
 
                     <button className='button primary-button' >Register</button>
 

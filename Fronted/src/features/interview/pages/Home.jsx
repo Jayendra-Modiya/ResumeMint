@@ -149,7 +149,7 @@ const Home = () => {
 
                 {error && <p className='form-error' role='alert'>{error}</p>}
 
-                {reports.length > 0 && (
+                {Array.isArray(reports) && reports.length > 0 && (
                     <section className='recent-reports'>
                         <h2>My Recent Interview Plans</h2>
                         <ul className='reports-list'>

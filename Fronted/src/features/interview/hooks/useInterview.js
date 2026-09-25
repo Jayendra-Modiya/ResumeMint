@@ -51,9 +51,11 @@ export const useInterview = () => {
         let response = null
         try {
             response = await getAllInterviewReports()
-            setReports(response.interviewReports)
+            // Keep the UI state as an array even if a server response is malformed.
+            setReports(Array.isArray(response.interviewReports) ? response.interviewReports : [])
         } catch (error) {
-            console.log(error)
+            setReports([])
+            setError(error.response?.data?.message || "Could not load your interview plans.")
         } finally {
             setLoading(false)
         }
@@ -66,7 +68,11 @@ export const useInterview = () => {
         setError("")
         try {
             await deleteInterviewReport(interviewId)
-            setReports((currentReports) => currentReports.filter((report) => report._id !== interviewId))
+            setReports((currentReports) =>
+                Array.isArray(currentReports)
+                    ? currentReports.filter((report) => report._id !== interviewId)
+                    : []
+            )
         } catch (error) {
             setError(error.response?.data?.message || "Could not delete this interview plan.")
         } finally {

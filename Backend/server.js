@@ -5,8 +5,14 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 const app = require('./src/app.js')
 const connectToDB = require('./src/config/db')
 
-connectToDB()
+async function startServer() {
+    await connectToDB()
 
-app.listen(3000,()=>{
-    console.log("Server is running on port 3000")
+    app.listen(3000, () => {
+        console.log("Server is running on port 3000")
+    })
+}
+
+startServer().catch(() => {
+    process.exit(1)
 })
