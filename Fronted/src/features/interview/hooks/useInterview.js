@@ -16,6 +16,15 @@ export const useInterview = () => {
     const { loading, setLoading, report, setReport, reports, setReports, error, setError } = context
 
     const generateReport = async ({ jobDescription, selfDescription, resumeFile }) => {
+        if (!jobDescription?.trim()) {
+            setError("Please enter the target job description.")
+            return null
+        }
+        if (!resumeFile && !selfDescription?.trim()) {
+            setError("Upload a PDF resume or add a short self-description to continue.")
+            return null
+        }
+
         setLoading(true)
         setError("")
         let response = null
@@ -23,7 +32,10 @@ export const useInterview = () => {
             response = await generateInterviewReport({ jobDescription, selfDescription, resumeFile })
             setReport(response.interviewReport)
         } catch (error) {
-            setError(error.response?.data?.message || "Could not generate your interview strategy. Please try again.")
+            const message = error.response?.data?.message
+            setError(message || (error.request
+                ? "Could not reach the interview service. Make sure the backend is running, then try again."
+                : "Could not generate your interview strategy. Please try again."))
         } finally {
             setLoading(false)
         }

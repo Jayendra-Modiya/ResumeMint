@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
     // The Express API runs on port 3000; Vite runs the frontend on port 5173.
-    baseURL: "https://resumemint-ncl0.onrender.com",
+    baseURL: "http://localhost:3000",
     withCredentials: true,
 })
 
@@ -17,11 +17,8 @@ export const generateInterviewReport = async ({ jobDescription, selfDescription,
     formData.append("selfDescription", selfDescription)
     formData.append("resume", resumeFile)
 
-    const response = await api.post("/api/interview/", formData, {
-        headers: {
-            "Content-Type": "multipart/form-data"
-        }
-    })
+    // Let the browser set the multipart boundary for this FormData request.
+    const response = await api.post("/api/interview/", formData)
 
     return response.data
 

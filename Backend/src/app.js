@@ -8,7 +8,7 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: ["http://localhost:5173", "https://resume-mint-six.vercel.app"],
+    origin: ["http://localhost:5173"],
     credentials: true
 }))
 
@@ -30,6 +30,9 @@ app.use((error, req, res, next) => {
             ? "Resume must be 3 MB or smaller."
             : "Only PDF resumes are supported."
         return res.status(400).json({ message })
+    }
+    if (error.status === 503 && error.message?.includes("AI service is temporarily busy")) {
+        return res.status(503).json({ message: error.message })
     }
     res.status(error.status || 500).json({
         message: error.message || "Unable to generate the interview report. Please try again."

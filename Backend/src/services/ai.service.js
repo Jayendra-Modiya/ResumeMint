@@ -6,6 +6,43 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GOOGLE_GENAI_API_KEY
 })
 
+const INTERVIEW_MODELS = [ "gemini-3.5-flash", "gemini-3.5-flash-lite" ]
+const GEMINI_RETRY_OPTIONS = {
+    attempts: 3,
+    initialDelay: 1,
+    maxDelay: 4,
+    expBase: 2,
+    jitter: 1
+}
+
+function isTemporaryGeminiError(error) {
+    const status = Number(error.status || error.code)
+    return status === 503 || status === 429 || status === 500 || status === 502 || status === 504 || status === 408
+}
+
+async function generateInterviewContent(contents, config) {
+    let lastError
+
+    for (const model of INTERVIEW_MODELS) {
+        try {
+            return await ai.models.generateContent({
+                model,
+                contents,
+                config: { ...config, retryOptions: GEMINI_RETRY_OPTIONS }
+            })
+        } catch (error) {
+            lastError = error
+            if (!isTemporaryGeminiError(error)) throw error
+            console.warn(`Gemini model ${model} is temporarily unavailable; trying the next model.`)
+        }
+    }
+
+    const error = new Error("The AI service is temporarily busy. Please try generating your strategy again in a few minutes.")
+    error.status = 503
+    error.cause = lastError
+    throw error
+}
+
 
 const interviewReportSchema = z.object({
     matchScore: z.number().describe("A score between 0 and 100 indicating how well the candidate's profile matches the job describe"),
@@ -69,13 +106,9 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
                         Job Description: ${jobDescription}
 `
 
-    const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
-        contents: prompt,
-        config: {
+    const response = await generateInterviewContent(prompt, {
             responseMimeType: "application/json",
             responseJsonSchema: interviewReportJsonSchema,
-        }
     })
 
     return parseGeminiJson(response, interviewReportSchema)
@@ -123,16 +156,12 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
                         The resume should not be so lengthy, it should ideally be 1-2 pages long when converted to PDF. Focus on quality rather than quantity and make sure to include all the relevant information that can increase the candidate's chances of getting an interview call for the given job description.
                     `
 
-    const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
-        contents: prompt,
-        config: {
+    const response = await generateInterviewContent(prompt, {
             responseMimeType: "application/json",
             responseJsonSchema: {
                 type: "object", additionalProperties: false,
                 required: [ "html" ], properties: { html: { type: "string" } }
             },
-        }
     })
 
 
