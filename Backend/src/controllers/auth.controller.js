@@ -1,7 +1,6 @@
 const userModel = require("../models/user.model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const emailService = require("../services/email.service")
 const tokenBlacklistModel = require("../models/blacklist.model")
 
 /**
@@ -60,7 +59,6 @@ async function registerUserController(req, res) {
             email: user.email
         }
     })
-        await emailService.sendRegistrationEmail(user.email, user.username)
 }
 
 

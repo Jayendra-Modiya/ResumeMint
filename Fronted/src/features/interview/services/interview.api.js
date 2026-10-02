@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
     // The Express API runs on port 3000; Vite runs the frontend on port 5173.
-    baseURL: "https://resumemint-pdeo.onrender.com",
+    baseURL: import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000',
     withCredentials: true,
 })
 

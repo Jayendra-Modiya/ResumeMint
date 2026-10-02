@@ -8,7 +8,7 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: ["http://localhost:5173", "https://resume-mint-two.vercel.app/"],
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }))
 
